@@ -22,3 +22,9 @@ def user_management(request):
         form = UserPermissionForm()
 
     return render(request, 'core/user_management.html', {'form': form})
+
+
+@login_required
+def dashboard(request):
+    # You can add more context here if needed, such as stats or data from your models
+    return render(request, 'core/dashboard.html')
