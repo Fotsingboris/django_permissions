@@ -1,0 +1,11 @@
+{% extends "core/base.html" %}
+{% block title %}User Management{% endblock %}
+
+{% block content %}
+    <h2>Create New User and Assign Permissions</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Create User</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "core/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h1>Welcome to the Admin Dashboard</h1>
+    <a href="{% url 'user_management' %}" class="btn btn-primary">Manage Users</a>
+{% endblock %}
