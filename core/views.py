@@ -268,28 +268,53 @@ class BlogView(PermissionRequiredMixin, View):
     permission_required = "core.can_view_blog"
 
     def get(self, request):
-        
         blogs = Blog.objects.all()
         categories = Category.objects.all()
         form = BlogForm()
-        return render(request, "core/blog/blog_list.html", {"blogs": blogs, "form": form, "categories":categories})
+        return render(request, "core/blog/blog_list.html", {"blogs": blogs, "form": form, "categories": categories})
 
     def post(self, request):
         action = request.POST.get("action")
-        if action == "create":
-            form = BlogForm(request.POST)
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Blog created successfully!")
-        elif action == "update":
-            blog = get_object_or_404(Blog, id=request.POST.get("blog_id"))
-            form = BlogForm(request.POST, instance=blog)
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Blog updated successfully!")
-        elif action == "delete":
-            blog = get_object_or_404(Blog, id=request.POST.get("blog_id"))
-            blog.delete()
-            messages.success(request, "Blog deleted successfully!")
+
+        # Check permissions for create, update, and delete actions
+        if action == "create" and not request.user.has_perm('core.can_create_blog'):
+            messages.error(request, "You do not have permission to create a blog.")
+            return redirect("blog")
+        elif action == "update" and not request.user.has_perm('core.can_update_blog'):
+            messages.error(request, "You do not have permission to update a blog.")
+            return redirect("blog")
+        elif action == "delete" and not request.user.has_perm('core.can_delete_blog'):
+            messages.error(request, "You do not have permission to delete a blog.")
+            return redirect("blog")
+
+        try:
+            with transaction.atomic():  # Begin transaction
+                if action == "create":
+                    form = BlogForm(request.POST)
+                    if form.is_valid():
+                        form.save()
+                        messages.success(request, "Blog created successfully!")
+                    else:
+                        print("Form errors:", form.errors)  # Debugging: Print errors
+                        messages.error(request, "Form is not valid. Please check the input fields.")
+
+                elif action == "update":
+                    blog = get_object_or_404(Blog, id=request.POST.get("blog_id"))
+                    form = BlogForm(request.POST, instance=blog)
+                    if form.is_valid():
+                        form.save()
+                        messages.success(request, "Blog updated successfully!")
+                    else:
+                        print("Form errors:", form.errors)  # Debugging: Print errors
+                        messages.error(request, "Form is not valid. Please check the input fields.")
+
+                elif action == "delete":
+                    blog = get_object_or_404(Blog, id=request.POST.get("blog_id"))
+                    blog.delete()
+                    messages.success(request, "Blog deleted successfully!")
+
+        except Exception as e:
+            # Rollback any changes if something goes wrong
+            messages.error(request, f"An error occurred: {str(e)}")
 
         return redirect("blog")
