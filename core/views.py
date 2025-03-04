@@ -223,8 +223,6 @@ class CategoryView(PermissionRequiredMixin, View):
         return redirect("category")
 
     
-    
-    
 class ProductView(PermissionRequiredMixin, View):
     permission_required = "core.can_view_product"
 
@@ -232,34 +230,51 @@ class ProductView(PermissionRequiredMixin, View):
         products = Product.objects.all()
         categories = Category.objects.all()
         form = ProductForm()
-        return render(request, "core/product/product_list.html", {"products": products, "form": form, "categories":categories})
+        return render(request, "core/product/product_list.html", {"products": products, "form": form, "categories": categories})
 
     def post(self, request):
         action = request.POST.get("action")
 
-        if action == "create":
-            form = ProductForm(request.POST, request.FILES)  # Ensure FILES is included
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Product created successfully!")
-            else:
-                print("Form errors:", form.errors)  # Debugging: Print errors
-                messages.error(request, "Form is not valid. Please check the input fields.")
+        # Check permissions for create, update, and delete actions
+        if action == "create" and not request.user.has_perm('core.can_create_product'):
+            messages.error(request, "You do not have permission to create a product.")
+            return redirect("product")
+        elif action == "update" and not request.user.has_perm('core.can_update_product'):
+            messages.error(request, "You do not have permission to update a product.")
+            return redirect("product")
+        elif action == "delete" and not request.user.has_perm('core.can_delete_product'):
+            messages.error(request, "You do not have permission to delete a product.")
+            return redirect("product")
 
-        elif action == "update":
-            product = get_object_or_404(Product, id=request.POST.get("product_id"))
-            form = ProductForm(request.POST, request.FILES, instance=product)
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Product updated successfully!")
-            else:
-                print("Form errors:", form.errors)  # Debugging: Print errors
-                messages.error(request, "Form is not valid. Please check the input fields.")
+        try:
+            with transaction.atomic():  # Begin transaction
+                if action == "create":
+                    form = ProductForm(request.POST, request.FILES)
+                    if form.is_valid():
+                        form.save()
+                        messages.success(request, "Product created successfully!")
+                    else:
+                        print("Form errors:", form.errors)  # Debugging: Print errors
+                        messages.error(request, "Form is not valid. Please check the input fields.")
 
-        elif action == "delete":
-            product = get_object_or_404(Product, id=request.POST.get("product_id"))
-            product.delete()
-            messages.success(request, "Product deleted successfully!")
+                elif action == "update":
+                    product = get_object_or_404(Product, id=request.POST.get("product_id"))
+                    form = ProductForm(request.POST, request.FILES, instance=product)
+                    if form.is_valid():
+                        form.save()
+                        messages.success(request, "Product updated successfully!")
+                    else:
+                        print("Form errors:", form.errors)  # Debugging: Print errors
+                        messages.error(request, "Form is not valid. Please check the input fields.")
+
+                elif action == "delete":
+                    product = get_object_or_404(Product, id=request.POST.get("product_id"))
+                    product.delete()
+                    messages.success(request, "Product deleted successfully!")
+
+        except Exception as e:
+            # Rollback any changes if something goes wrong
+            messages.error(request, f"An error occurred: {str(e)}")
 
         return redirect("product")
 
