@@ -1,9 +1,9 @@
 {% extends "core/base.html" %}
-{% block title %}User Management{% endblock %}
-
+{% block title %}{% trans "User Management" %}{% endblock %}
+{% load i18n %}
 {% block content %}
     <div class="container">
-        <h2 class="my-4">Create New User and Assign Permissions</h2>
+        <h2 class="my-4">{% trans "Create New User and Assign Permissions" %}</h2>
 
         <form method="POST">
             {% csrf_token %}
@@ -11,14 +11,14 @@
             <!-- Display form errors -->
             {% if form.errors %}
                 <div class="alert alert-danger">
-                    <strong>Error:</strong> Please correct the errors below.
+                    <strong>Error:</strong> {% trans "Please correct the errors below." %}
                     {{ form.non_field_errors }}
                 </div>
             {% endif %}
 
             <!-- Username -->
             <div class="mb-3">
-                <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+                <label for="{{ form.username.id_for_label }}" class="form-label">{% trans "Username" %}</label>
                 {{ form.username }}
                 {% if form.username.errors %}
                     <div class="text-danger">
@@ -31,7 +31,7 @@
 
             <!-- Email -->
             <div class="mb-3">
-                <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                <label for="{{ form.email.id_for_label }}" class="form-label">{% trans "Email" %}</label>
                 {{ form.email }}
                 {% if form.email.errors %}
                     <div class="text-danger">
@@ -44,7 +44,7 @@
 
             <!-- Password 1 -->
             <div class="mb-3">
-                <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+                <label for="{{ form.password.id_for_label }}" class="form-label">{% trans "Password" %}</label>
                 {{ form.password }}
                 {% if form.password.errors %}
                     <div class="text-danger">
@@ -57,7 +57,7 @@
 
             <!-- Password 2 -->
             <div class="mb-3">
-                <label for="{{ form.password2.id_for_label }}" class="form-label">Confirm Password</label>
+                <label for="{{ form.password2.id_for_label }}" class="form-label">{% trans "Confirm Password" %}</label>
                 {{ form.password2 }}
                 {% if form.password2.errors %}
                     <div class="text-danger">
@@ -71,7 +71,7 @@
        
             <!-- Permissions (Group them in 4 per row) -->
             <div class="mb-3">
-                <label class="form-label">Permissions</label>
+                <label class="form-label">{% trans "Permissions" %}</label>
                 <div class="row">
                     {% for permission in form.permissions %}
                         <div class="col-3 form-check">
@@ -87,7 +87,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-success">Create User</button>
+            <button type="submit" class="btn btn-success">{% trans "Create User" %}</button>
         </form>
     </div>
 {% endblock %}
