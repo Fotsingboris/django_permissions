@@ -196,3 +196,43 @@ class CategoryView(PermissionRequiredMixin, View):
             messages.success(request, "Category deleted successfully!")
 
         return redirect("category")
+    
+    
+    
+class ProductView(PermissionRequiredMixin, View):
+    permission_required = "app.can_view_product"
+
+    def get(self, request):
+        products = Product.objects.all()
+        categories = Category.objects.all()
+        form = ProductForm()
+        return render(request, "core/product/product_list.html", {"products": products, "form": form, "categories":categories})
+
+    def post(self, request):
+        action = request.POST.get("action")
+
+        if action == "create":
+            form = ProductForm(request.POST, request.FILES)  # Ensure FILES is included
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Product created successfully!")
+            else:
+                print("Form errors:", form.errors)  # Debugging: Print errors
+                messages.error(request, "Form is not valid. Please check the input fields.")
+
+        elif action == "update":
+            product = get_object_or_404(Product, id=request.POST.get("product_id"))
+            form = ProductForm(request.POST, request.FILES, instance=product)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Product updated successfully!")
+            else:
+                print("Form errors:", form.errors)  # Debugging: Print errors
+                messages.error(request, "Form is not valid. Please check the input fields.")
+
+        elif action == "delete":
+            product = get_object_or_404(Product, id=request.POST.get("product_id"))
+            product.delete()
+            messages.success(request, "Product deleted successfully!")
+
+        return redirect("product")
