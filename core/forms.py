@@ -4,6 +4,12 @@ from django.contrib.contenttypes.models import ContentType
 from core.models import Blog, Product, Category
 
 class UserPermissionForm(forms.ModelForm):
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(),
+        label="Confirm Password",
+        required=True
+    )
+
     permissions = forms.ModelMultipleChoiceField(
         queryset=Permission.objects.filter(
             codename__in=[
@@ -19,7 +25,24 @@ class UserPermissionForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password']
+        fields = ['username', 'email', 'password', 'password2', 'permissions']  # Include all fields
         widgets = {
-            'password': forms.PasswordInput(),
+            'password': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'})
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get("password")
+        password2 = cleaned_data.get("password2")
+
+        if password1 and password2 and password1 != password2:
+            self.add_error('password2', 'Passwords do not match.')
+
+        # Ensure permissions field is a list
+        permissions = cleaned_data.get('permissions')
+        if permissions is None:
+            cleaned_data['permissions'] = []  # Default to empty list if no permissions are selected
+
+        return cleaned_data

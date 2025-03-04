@@ -11,25 +11,35 @@ from django.contrib import messages
 def user_management(request):
     if request.method == 'POST':
         form = UserPermissionForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
-            user.save()
-            
-            # Assign permissions to the user
-            permissions = form.cleaned_data['permissions']
-            user.user_permissions.set(permissions)
-            user.save()
-            messages.success(request, 'User Created Successfully')
-            
-
-            return redirect('dashboard')
-    else:
         
+        if form.is_valid():
+            try:
+                # Create the user without saving to DB yet
+                user = form.save(commit=False)
+                user.set_password(form.cleaned_data['password'])  # Set the password
+                user.save()  # Save the user to the database
+                
+                # Assign selected permissions to the user
+                permissions = form.cleaned_data.get('permissions', [])  # Default to empty list if no permissions are selected
+                user.user_permissions.set(permissions)  # Assign permissions
+                user.save()  # Save user again after assigning permissions
+                
+                messages.success(request, 'User Created Successfully')
+                return redirect('dashboard')
+
+            except Exception as e:
+                # In case of any error, rollback and display error message
+                messages.error(request, f"An error occurred while creating the user: {str(e)}")
+                return redirect('user-management')
+        else:
+            # If form is invalid, show an error message
+            print(request.POST)  # Debug: print submitted form data
+            print(form.errors)  # Debug: print form errors to the console
+            messages.error(request, 'Please correct the errors in the form.')
+    else:
         form = UserPermissionForm()
 
     return render(request, 'core/user_management.html', {'form': form})
-
 
 @login_required
 def dashboard(request):
