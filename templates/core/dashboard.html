@@ -1,66 +1,45 @@
 {% extends "core/base.html" %}
 {% load i18n %}
-
-{% block title %}{% trans "Dashboard" %}{% endblock %}
-
 {% block content %}
 <div class="container mt-4">
+    <h2>{% trans "Admin Dashboard" %}</h2>
 
-    <h1>{% trans "Welcome to the Dashboard" %}</h1>
-
-    {% if user.is_superuser %}
-   
-        <!-- Admin View -->
-        <h2 class="my-4">{% trans "All Users and Permissions" %}</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>{% trans "Username" %}</th>
-                    <th>{% trans "Email" %}</th>
-                    <th>{% trans "Permissions" %}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user, accessible_buttons in users_permissions %}
-                    <tr>
-                        <td>{{ user.username }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>
-                            {% if accessible_buttons %}
-                                <div class="btn-group">
-                                    {% for button in accessible_buttons %}
-                                        <button type="button" class="btn btn-success">{{ button }}</button>
-                                    {% endfor %}
-                                </div>
-                            {% else %}
-                                <p>{% trans "No permissions assigned" %}</p>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <h2 class="my-4">{% trans "Available Permissions" %}</h2>
-        <div class="row">
-            {% for label, codename in available_permissions %}
-                <div class="col-3">
-                    <button type="button" class="btn btn-outline-primary mt-2">
-                        {{ label }}
-                    </button>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{% trans "Total Blogs" %}</h5>
+                    <p class="card-text">{{ blog_count }}</p>
                 </div>
-            {% endfor %}
+            </div>
         </div>
 
-    {% else %}
-        <!-- Regular User View -->
-        <h2 class="my-4">{% trans "Your Permissions" %}</h2>
-        <ul>
-            {% for permission in users_permissions.0.1 %}
-                <li>{{ permission }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-</div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{% trans "Total Products" %}</h5>
+                    <p class="card-text">{{ product_count }}</p>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{% trans "Total Categories" %}</h5>
+                    <p class="card-text">{{ category_count }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{% trans "Total Revenue" %}</h5>
+                    <p class="card-text">${{ total_revenue }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

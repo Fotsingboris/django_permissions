@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-04 01:15+0000\n"
+"POT-Creation-Date: 2025-03-04 22:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,9 +21,68 @@ msgstr ""
 msgid "Passwords do not match."
 msgstr "Les mots de passe ne correspondent pas."
 
-#: core/models.py:7 core/models.py:46
+#: core/forms.py:58 core/forms.py:86 core/models.py:7 core/models.py:46
+#: templates/core/category/category_list.html:16
+#: templates/core/category/category_list.html:48
+#: templates/core/category/category_list.html:94
+#: templates/core/product/product_list.html:17
+#: templates/core/product/product_list.html:55
+#: templates/core/product/product_list.html:131
 msgid "Name"
 msgstr "Nom"
+
+#: core/forms.py:61
+msgid "Enter category name"
+msgstr "Entrez le nom de la catégorie"
+
+#: core/forms.py:70 core/models.py:25 templates/core/blog/blog_list.html:17
+#: templates/core/blog/blog_list.html:54 templates/core/blog/blog_list.html:125
+msgid "Title"
+msgstr "Titre"
+
+#: core/forms.py:71 core/models.py:26 templates/core/blog/blog_list.html:70
+#: templates/core/blog/blog_list.html:139
+msgid "Content"
+msgstr "Contenu"
+
+#: core/forms.py:72 core/forms.py:88 core/models.py:16 core/models.py:27
+#: core/models.py:48 templates/core/base.html:171
+#: templates/core/blog/blog_list.html:18 templates/core/blog/blog_list.html:59
+#: templates/core/blog/blog_list.html:130
+#: templates/core/product/product_list.html:18
+#: templates/core/product/product_list.html:60
+#: templates/core/product/product_list.html:136
+msgid "Category"
+msgstr "Catégorie"
+
+#: core/forms.py:75
+msgid "Enter blog title"
+msgstr "Entrez le titre du blog"
+
+#: core/forms.py:76
+msgid "Enter blog content"
+msgstr "Entrez le contenu du blog"
+
+#: core/forms.py:87 core/models.py:47
+#: templates/core/product/product_list.html:76
+#: templates/core/product/product_list.html:150
+msgid "Description"
+msgstr "Description"
+
+#: core/forms.py:89 core/models.py:49
+#: templates/core/product/product_list.html:19
+#: templates/core/product/product_list.html:71
+#: templates/core/product/product_list.html:145
+msgid "Price"
+msgstr "Prix"
+
+#: core/forms.py:92
+msgid "Enter product name"
+msgstr "Entrez le nom du produit"
+
+#: core/forms.py:93
+msgid "Enter product description"
+msgstr "Entrez la description du produit"
 
 #: core/models.py:11
 msgid "Can Create Category"
@@ -41,23 +100,11 @@ msgstr "Peut voir une catégorie"
 msgid "Can Delete Category"
 msgstr "Peut supprimer une catégorie"
 
-#: core/models.py:16 core/models.py:27 core/models.py:48
-msgid "Category"
-msgstr "Catégorie"
-
-#: core/models.py:17
+#: core/models.py:17 templates/core/category/category_list.html:6
 msgid "Categories"
 msgstr "Catégories"
 
-#: core/models.py:25
-msgid "Title"
-msgstr "Titre"
-
-#: core/models.py:26
-msgid "Content"
-msgstr "Contenu"
-
-#: core/models.py:28
+#: core/models.py:28 templates/core/blog/blog_list.html:19
 msgid "Created At"
 msgstr "Créé le"
 
@@ -77,21 +124,13 @@ msgstr "Peut voir un blog"
 msgid "Can Delete Blog"
 msgstr "Peut supprimer un blog"
 
-#: core/models.py:37
+#: core/models.py:37 templates/core/base.html:187
 msgid "Blog"
 msgstr "Blog"
 
-#: core/models.py:38
+#: core/models.py:38 templates/core/blog/blog_list.html:7
 msgid "Blogs"
 msgstr "Blogs"
-
-#: core/models.py:47
-msgid "Description"
-msgstr "Description"
-
-#: core/models.py:49
-msgid "Price"
-msgstr "Prix"
 
 #: core/models.py:53
 msgid "Can Create Product"
@@ -109,86 +148,300 @@ msgstr "Peut voir un produit"
 msgid "Can Delete Product"
 msgstr "Peut supprimer un produit"
 
-#: core/models.py:58
+#: core/models.py:58 templates/core/base.html:179
 msgid "Product"
 msgstr "Produit"
 
-#: core/models.py:59
+#: core/models.py:59 templates/core/product/product_list.html:7
 msgid "Products"
 msgstr "Produits"
 
-#: django_permissions/settings.py:130 templates/core/base.html:63
-#: templates/core/base.html:75
+#: core/views.py:34
+msgid "User Created Successfully"
+msgstr "Utilisateur créé avec succès"
+
+#: core/views.py:39
+msgid "An error occurred while creating the user: {str(e)}"
+msgstr "Une erreur est survenue lors de la création de l'utilisateur : {str(e)}"
+
+#: core/views.py:45
+msgid "Please correct the errors in the form."
+msgstr "Veuillez corriger les erreurs dans le formulaire."
+
+#: core/views.py:82
+msgid "User Logged Successfully"
+msgstr "Utilisateur connecté avec succès"
+
+#: core/views.py:86
+msgid "Invalid username or password"
+msgstr "Nom d'utilisateur ou mot de passe invalide"
+
+#: core/views.py:107
+msgid "Create Blog"
+msgstr "Créer un blog"
+
+#: core/views.py:108 templates/core/blog/blog_list.html:75
+msgid "Update Blog"
+msgstr "Mettre à jour un blog"
+
+#: core/views.py:109
+msgid "View Blog"
+msgstr "Voir un blog"
+
+#: core/views.py:110 templates/core/blog/blog_list.html:88
+msgid "Delete Blog"
+msgstr "Supprimer un blog"
+
+#: core/views.py:111
+msgid "Create Product"
+msgstr "Créer un produit"
+
+#: core/views.py:112 templates/core/product/product_list.html:81
+msgid "Update Product"
+msgstr "Mettre à jour un produit"
+
+#: core/views.py:113
+msgid "View Product"
+msgstr "Voir un produit"
+
+#: core/views.py:114 templates/core/product/product_list.html:94
+msgid "Delete Product"
+msgstr "Supprimer un produit"
+
+#: core/views.py:115
+msgid "Create Category"
+msgstr "Créer une catégorie"
+
+#: core/views.py:116
+msgid "Update Category"
+msgstr "Mettre à jour une catégorie"
+
+#: core/views.py:117
+msgid "View Category"
+msgstr "Voir une catégorie"
+
+#: core/views.py:118 templates/core/category/category_list.html:62
+msgid "Delete Category"
+msgstr "Supprimer une catégorie"
+
+#: core/views.py:166
+msgid "You do not have permission to create a category."
+msgstr "Vous n'avez pas la permission de créer une catégorie."
+
+#: core/views.py:170
+msgid "You do not have permission to update a category."
+msgstr "Vous n'avez pas la permission de mettre à jour une catégorie."
+
+#: core/views.py:174
+msgid "You do not have permission to delete a category."
+msgstr "Vous n'avez pas la permission de supprimer une catégorie."
+
+#: core/views.py:183
+msgid "Category created successfully!"
+msgstr "Catégorie créée avec succès !"
+
+#: core/views.py:185
+msgid "Error creating category."
+msgstr "Erreur lors de la création de la catégorie."
+
+#: core/views.py:192
+msgid "Category updated successfully!"
+msgstr "Catégorie mise à jour avec succès !"
+
+#: core/views.py:194
+msgid "Error updating category."
+msgstr "Erreur lors de la mise à jour de la catégorie."
+
+#: core/views.py:199
+msgid "Category deleted successfully!"
+msgstr "Catégorie supprimée avec succès !"
+
+#: core/views.py:203 core/views.py:259 core/views.py:315
+msgid "An error occurred: {str(e)}"
+msgstr "Une erreur est survenue : {str(e)}"
+
+#: core/views.py:222
+msgid "You do not have permission to create a product."
+msgstr "Vous n'avez pas la permission de créer un produit."
+
+#: core/views.py:225
+msgid "You do not have permission to update a product."
+msgstr "Vous n'avez pas la permission de mettre à jour un produit."
+
+#: core/views.py:228
+msgid "You do not have permission to delete a product."
+msgstr "Vous n'avez pas la permission de supprimer un produit."
+
+#: core/views.py:237
+msgid "Product created successfully!"
+msgstr "Produit créé avec succès !"
+
+#: core/views.py:240 core/views.py:250 core/views.py:296 core/views.py:306
+msgid "Form is not valid. Please check the input fields."
+msgstr "Le formulaire n'est pas valide. Veuillez vérifier les champs."
+
+#: core/views.py:247
+msgid "Product updated successfully!"
+msgstr "Produit mis à jour avec succès !"
+
+#: core/views.py:255
+msgid "Product deleted successfully!"
+msgstr "Produit supprimé avec succès !"
+
+#: core/views.py:278
+msgid "You do not have permission to create a blog."
+msgstr "Vous n'avez pas la permission de créer un blog."
+
+#: core/views.py:281
+msgid "You do not have permission to update a blog."
+msgstr "Vous n'avez pas la permission de mettre à jour un blog."
+
+#: core/views.py:284
+msgid "You do not have permission to delete a blog."
+msgstr "Vous n'avez pas la permission de supprimer un blog."
+
+#: core/views.py:293
+msgid "Blog created successfully!"
+msgstr "Blog créé avec succès !"
+
+#: core/views.py:311
+msgid "Blog deleted successfully!"
+msgstr "Blog supprimé avec succès !"
+
+#: django_permissions/settings.py:130 templates/core/base.html:128
+#: templates/core/base.html:140
 msgid "English"
 msgstr "Anglais"
 
-#: django_permissions/settings.py:131 templates/core/base.html:65
+#: django_permissions/settings.py:131 templates/core/base.html:130
 msgid "French"
 msgstr "Français"
 
-#: templates/core/base.html:7 templates/core/base.html:38
+#: templates/core/base.html:7 templates/core/base.html:101
 msgid "Manage Permissions"
 msgstr "Gérer les permissions"
 
-#: templates/core/base.html:47 templates/core/dashboard.html:4
+#: templates/core/base.html:111 templates/core/base.html:157
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
-#: templates/core/base.html:50
+#: templates/core/base.html:115
 msgid "Logout"
 msgstr "Se déconnecter"
 
-#: templates/core/base.html:55 templates/core/login.html:3
-#: templates/core/login.html:9
+#: templates/core/base.html:120 templates/core/login.html:3
+#: templates/core/login.html:9 templates/core/login.html:25
 msgid "Login"
 msgstr "Connexion"
 
-#: templates/core/base.html:67
+#: templates/core/base.html:132
 msgid "Language"
 msgstr "Langue"
 
-#: templates/core/base.html:76
+#: templates/core/base.html:141
 msgid "Français"
 msgstr "Français"
 
-#: templates/core/base.html:94
-msgid "2025 My Project"
-msgstr "2025 Mon Projet"
+#: templates/core/base.html:163
+msgid "Overview"
+msgstr "Aperçu"
 
-#: templates/core/dashboard.html:7
-msgid "Welcome to the Dashboard"
-msgstr "Bienvenue sur le tableau de bord"
+#: templates/core/base.html:196
+msgid "All Users"
+msgstr "Tous les utilisateurs"
+
+#: templates/core/blog/blog_list.html:10 templates/core/blog/blog_list.html:116
+#: templates/core/blog/blog_list.html:144
+msgid "Add Blog"
+msgstr "Ajouter un blog"
+
+#: templates/core/blog/blog_list.html:20
+#: templates/core/category/category_list.html:17
+#: templates/core/product/product_list.html:20
+msgid "Actions"
+msgstr "Actions"
+
+#: templates/core/blog/blog_list.html:31
+#: templates/core/category/category_list.html:26
+#: templates/core/product/product_list.html:31
+msgid "Edit"
+msgstr "Éditer"
+
+#: templates/core/blog/blog_list.html:34 templates/core/blog/blog_list.html:99
+#: templates/core/category/category_list.html:30
+#: templates/core/category/category_list.html:71
+#: templates/core/product/product_list.html:35
+#: templates/core/product/product_list.html:105
+msgid "Delete"
+msgstr "Supprimer"
+
+#: templates/core/blog/blog_list.html:44
+msgid "Edit Blog"
+msgstr "Éditer le blog"
+
+#: templates/core/blog/blog_list.html:76 templates/core/blog/blog_list.html:145
+#: templates/core/product/product_list.html:82
+#: templates/core/product/product_list.html:156
+msgid "Close"
+msgstr "Fermer"
+
+#: templates/core/blog/blog_list.html:96
+msgid "Are you sure you want to delete this blog?"
+msgstr "Êtes-vous sûr de vouloir supprimer ce blog ?"
+
+#: templates/core/blog/blog_list.html:100
+#: templates/core/product/product_list.html:106
+msgid "Cancel"
+msgstr "Annuler"
+
+#: templates/core/category/category_list.html:8
+#: templates/core/category/category_list.html:87
+msgid "Add Category"
+msgstr "Ajouter une catégorie"
+
+#: templates/core/category/category_list.html:40
+msgid "Edit Category"
+msgstr "Éditer la catégorie"
+
+#: templates/core/category/category_list.html:50
+msgid "Save Changes"
+msgstr "Sauvegarder les modifications"
+
+#: templates/core/category/category_list.html:66
+msgid "Are you sure you want to delete"
+msgstr "Êtes-vous sûr de vouloir supprimer"
+
+#: templates/core/category/category_list.html:96
+msgid "Add"
+msgstr "Ajouter"
+
+#: templates/core/dashboard.html:5
+msgid "Admin Dashboard"
+msgstr "Tableau de bord administrateur"
 
 #: templates/core/dashboard.html:11
-msgid "All Users and Permissions"
-msgstr "Tous les utilisateurs et permissions"
+msgid "Total Blogs"
+msgstr "Total des blogs"
 
-#: templates/core/dashboard.html:15 templates/core/login.html:15
-#: templates/core/user_management.html:21
+#: templates/core/dashboard.html:20
+msgid "Total Products"
+msgstr "Total des produits"
+
+#: templates/core/dashboard.html:29
+msgid "Total Categories"
+msgstr "Total des catégories"
+
+#: templates/core/dashboard.html:38
+msgid "Total Revenue"
+msgstr "Revenu total"
+
+#: templates/core/login.html:15 templates/core/user_management.html:22
+#: templates/core/users/users.html:47 templates/core/users/users.html:128
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: templates/core/dashboard.html:16 templates/core/user_management.html:34
-msgid "Email"
-msgstr "E-mail"
-
-#: templates/core/dashboard.html:17 templates/core/user_management.html:74
-msgid "Permissions"
-msgstr "Permissions"
-
-#: templates/core/dashboard.html:33
-msgid "No permissions assigned"
-msgstr "Aucune permission attribuée"
-
-#: templates/core/dashboard.html:41
-msgid "Available Permissions"
-msgstr "Permissions disponibles"
-
-#: templates/core/dashboard.html:54
-msgid "Your Permissions"
-msgstr "Vos permissions"
-
-#: templates/core/login.html:21 templates/core/user_management.html:47
+#: templates/core/login.html:21 templates/core/user_management.html:48
+#: templates/core/users/users.html:73
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -196,29 +449,70 @@ msgstr "Mot de passe"
 msgid "Forgot your password?"
 msgstr "Mot de passe oublié ?"
 
-#: templates/core/user_management.html:2
+#: templates/core/product/product_list.html:10
+#: templates/core/product/product_list.html:122
+#: templates/core/product/product_list.html:155
+msgid "Add Product"
+msgstr "Ajouter un produit"
+
+#: templates/core/product/product_list.html:45
+msgid "Edit Product"
+msgstr "Éditer le produit"
+
+#: templates/core/product/product_list.html:102
+msgid "Are you sure you want to delete this product?"
+msgstr "Êtes-vous sûr de vouloir supprimer ce produit ?"
+
+#: templates/core/user_management.html:4 templates/core/users/users.html:26
 msgid "User Management"
 msgstr "Gestion des utilisateurs"
 
-#: templates/core/user_management.html:6
+#: templates/core/user_management.html:7 templates/core/users/users.html:32
 msgid "Create New User and Assign Permissions"
 msgstr "Créer un nouvel utilisateur et attribuer des permissions"
 
-#: templates/core/user_management.html:14
+#: templates/core/user_management.html:15 templates/core/users/users.html:40
 msgid "Error"
 msgstr "Erreur"
 
-#: templates/core/user_management.html:14
+#: templates/core/user_management.html:15 templates/core/users/users.html:40
 msgid "Please correct the errors below."
 msgstr "Veuillez corriger les erreurs ci-dessous."
 
-#: templates/core/user_management.html:60
+#: templates/core/user_management.html:35 templates/core/users/users.html:60
+#: templates/core/users/users.html:129
+msgid "Email"
+msgstr "E-mail"
+
+#: templates/core/user_management.html:61 templates/core/users/users.html:86
 msgid "Confirm Password"
 msgstr "Confirmer le mot de passe"
 
-#: templates/core/user_management.html:90
+#: templates/core/user_management.html:75 templates/core/users/users.html:100
+#: templates/core/users/users.html:130
+msgid "Permissions"
+msgstr "Permissions"
+
+#: templates/core/user_management.html:91 templates/core/users/users.html:116
 msgid "Create User"
 msgstr "Créer un utilisateur"
+
+#: templates/core/users/users.html:14
+msgid "All Users and Permissions"
+msgstr "Tous les utilisateurs et permissions"
+
+#: templates/core/users/users.html:16
+msgid "Add Users"
+msgstr "Ajouter des utilisateurs"
+
+#: templates/core/users/users.html:146
+msgid "No permissions assigned"
+msgstr "Aucune permission attribuée"
+
+#: templates/core/users/users.html:154
+msgid "Available Permissions"
+msgstr "Permissions disponibles"
+
 
 #: venv/lib/python3.11/site-packages/django/contrib/messages/apps.py:16
 msgid "Messages"
@@ -808,10 +1102,6 @@ msgstr[1] ""
 #: venv/lib/python3.11/site-packages/django/forms/formsets.py:484
 #: venv/lib/python3.11/site-packages/django/forms/formsets.py:491
 msgid "Order"
-msgstr ""
-
-#: venv/lib/python3.11/site-packages/django/forms/formsets.py:499
-msgid "Delete"
 msgstr ""
 
 #: venv/lib/python3.11/site-packages/django/forms/models.py:901
@@ -1443,3 +1733,9 @@ msgstr ""
 #: venv/lib/python3.11/site-packages/django/views/templates/default_urlconf.html:236
 msgid "Connect, get help, or contribute"
 msgstr ""
+
+#~ msgid "Welcome to the Dashboard"
+#~ msgstr "Bienvenue sur le tableau de bord"
+
+#~ msgid "Your Permissions"
+#~ msgstr "Vos permissions"

@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.utils.translation import gettext_lazy as _
 
 from core.models import *
 from .forms import *
@@ -30,18 +31,18 @@ def user_management(request):
                 user.user_permissions.set(permissions)  # Assign permissions
                 user.save()  # Save user again after assigning permissions
                 
-                messages.success(request, 'User Created Successfully')
+                messages.success(request, _('User Created Successfully'))
                 return redirect('dashboard')
 
             except Exception as e:
                 # In case of any error, rollback and display error message
-                messages.error(request, f"An error occurred while creating the user: {str(e)}")
+                messages.error(request, _(f"An error occurred while creating the user: {str(e)}"))
                 return redirect('user-management')
         else:
             # If form is invalid, show an error message
             print(request.POST)  # Debug: print submitted form data
             print(form.errors)  # Debug: print form errors to the console
-            messages.error(request, 'Please correct the errors in the form.')
+            messages.error(request, _('Please correct the errors in the form.'))
     else:
         form = UserPermissionForm()
 
@@ -50,46 +51,27 @@ def user_management(request):
 
 @login_required
 def dashboard(request):
-    # Define all available permissions (as button labels and their corresponding codename)
-    available_permissions = [
-        ('Create Blog', 'can_create_blog'),
-        ('Update Blog', 'can_update_blog'),
-        ('View Blog', 'can_view_blog'),
-        ('Delete Blog', 'can_delete_blog'),
-        ('Create Product', 'can_create_product'),
-        ('Update Product', 'can_update_product'),
-        ('View Product', 'can_view_product'),
-        ('Delete Product', 'can_delete_product'),
-        ('Create Category', 'can_create_category'),
-        ('Update Category', 'can_update_category'),
-        ('View Category', 'can_view_category'),
-        ('Delete Category', 'can_delete_category')
-    ]
+    # Assuming the user is an admin or staff member
+    if not request.user.is_staff:
+        return redirect('home')  # Redirect to home page if not an admin
+    
+    # Get the count of each model
+    blog_count = Blog.objects.count()
+    product_count = Product.objects.count()
+    category_count = Category.objects.count()
+    
+    # You could also add other stats here, such as the total revenue from products
+    total_revenue = Product.objects.aggregate(total_revenue=models.Sum('price'))['total_revenue'] or 0
 
-    users_permissions = []
-
-    # Check if the logged-in user is an admin
-    if request.user.is_superuser:
-        # Admin can see all users
-        users = User.objects.all()
-    else:
-        # Regular users can only see their own permissions
-        users = [request.user]  # Only their own user
-
-    # For each user, check their permissions and create a list of accessible buttons
-    for user in users:
-        user_permissions = user.user_permissions.all().values_list('codename', flat=True)
-        accessible_buttons = []
-
-        # Check which buttons (permissions) the user has and add them to accessible_buttons
-        for permission_label, permission_codename in available_permissions:
-            if permission_codename in user_permissions:
-                accessible_buttons.append(permission_label)
-
-        users_permissions.append((user, accessible_buttons))  # Store user and accessible buttons
-
-    return render(request, 'core/dashboard.html', {'users_permissions': users_permissions, 'available_permissions': available_permissions})
-
+    # Pass the data to the context
+    context = {
+        'blog_count': blog_count,
+        'product_count': product_count,
+        'category_count': category_count,
+        'total_revenue': total_revenue,
+    }
+    
+    return render(request, 'core/dashboard.html', context)
 
 def login_view(request):
     if request.method == 'POST':
@@ -97,11 +79,11 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            messages.success(request, 'User Logged Successfully')
+            messages.success(request, _('User Logged Successfully'))
             
             return redirect('dashboard')  # Redirect to the dashboard after successful login
         else:
-            messages.error(request, 'Invalid username or password')
+            messages.error(request, _('Invalid username or password'))
     else:
         form = AuthenticationForm()
     
@@ -122,18 +104,18 @@ def all_users(request):
     
     # Define all available permissions (as button labels and their corresponding codename)
     available_permissions = [
-        ('Create Blog', 'can_create_blog'),
-        ('Update Blog', 'can_update_blog'),
-        ('View Blog', 'can_view_blog'),
-        ('Delete Blog', 'can_delete_blog'),
-        ('Create Product', 'can_create_product'),
-        ('Update Product', 'can_update_product'),
-        ('View Product', 'can_view_product'),
-        ('Delete Product', 'can_delete_product'),
-        ('Create Category', 'can_create_category'),
-        ('Update Category', 'can_update_category'),
-        ('View Category', 'can_view_category'),
-        ('Delete Category', 'can_delete_category')
+        (_('Create Blog'), 'can_create_blog'),
+        (_('Update Blog'), 'can_update_blog'),
+        (_('View Blog'), 'can_view_blog'),
+        (_('Delete Blog'), 'can_delete_blog'),
+        (_('Create Product'), 'can_create_product'),
+        (_('Update Product'), 'can_update_product'),
+        (_('View Product'), 'can_view_product'),
+        (_('Delete Product'), 'can_delete_product'),
+        (_('Create Category'), 'can_create_category'),
+        (_('Update Category'), 'can_update_category'),
+        (_('View Category'), 'can_view_category'),
+        (_('Delete Category'), 'can_delete_category')
     ]
 
     users_permissions = []
@@ -181,15 +163,15 @@ class CategoryView(PermissionRequiredMixin, View):
 
         # Permission checks for the actions
         if action == "create" and not request.user.has_perm('core.can_create_category'):
-            messages.error(request, "You do not have permission to create a category.")
+            messages.error(request, _("You do not have permission to create a category."))
             return redirect("category")
 
         elif action == "update" and not request.user.has_perm('core.can_update_category'):
-            messages.error(request, "You do not have permission to update a category.")
+            messages.error(request, _("You do not have permission to update a category."))
             return redirect("category")
 
         elif action == "delete" and not request.user.has_perm('core.can_delete_category'):
-            messages.error(request, "You do not have permission to delete a category.")
+            messages.error(request, _("You do not have permission to delete a category."))
             return redirect("category")
 
         try:
@@ -198,27 +180,27 @@ class CategoryView(PermissionRequiredMixin, View):
                     form = CategoryForm(request.POST)
                     if form.is_valid():
                         form.save()
-                        messages.success(request, "Category created successfully!")
+                        messages.success(request, _("Category created successfully!"))
                     else:
-                        messages.error(request, "Error creating category.")
+                        messages.error(request, _("Error creating category."))
 
                 elif action == "update":
                     category = get_object_or_404(Category, id=request.POST.get("category_id"))
                     form = CategoryForm(request.POST, instance=category)
                     if form.is_valid():
                         form.save()
-                        messages.success(request, "Category updated successfully!")
+                        messages.success(request, _("Category updated successfully!"))
                     else:
-                        messages.error(request, "Error updating category.")
+                        messages.error(request, _("Error updating category."))
 
                 elif action == "delete":
                     category = get_object_or_404(Category, id=request.POST.get("category_id"))
                     category.delete()
-                    messages.success(request, "Category deleted successfully!")
+                    messages.success(request, _("Category deleted successfully!"))
 
         except Exception as e:
             # Rollback any changes if something goes wrong
-            messages.error(request, f"An error occurred: {str(e)}")
+            messages.error(request, _(f"An error occurred: {str(e)}"))
 
         return redirect("category")
 
@@ -237,13 +219,13 @@ class ProductView(PermissionRequiredMixin, View):
 
         # Check permissions for create, update, and delete actions
         if action == "create" and not request.user.has_perm('core.can_create_product'):
-            messages.error(request, "You do not have permission to create a product.")
+            messages.error(request, _("You do not have permission to create a product."))
             return redirect("product")
         elif action == "update" and not request.user.has_perm('core.can_update_product'):
-            messages.error(request, "You do not have permission to update a product.")
+            messages.error(request, _("You do not have permission to update a product."))
             return redirect("product")
         elif action == "delete" and not request.user.has_perm('core.can_delete_product'):
-            messages.error(request, "You do not have permission to delete a product.")
+            messages.error(request, _("You do not have permission to delete a product."))
             return redirect("product")
 
         try:
@@ -252,29 +234,29 @@ class ProductView(PermissionRequiredMixin, View):
                     form = ProductForm(request.POST, request.FILES)
                     if form.is_valid():
                         form.save()
-                        messages.success(request, "Product created successfully!")
+                        messages.success(request, _("Product created successfully!"))
                     else:
                         print("Form errors:", form.errors)  # Debugging: Print errors
-                        messages.error(request, "Form is not valid. Please check the input fields.")
+                        messages.error(request, _("Form is not valid. Please check the input fields."))
 
                 elif action == "update":
                     product = get_object_or_404(Product, id=request.POST.get("product_id"))
                     form = ProductForm(request.POST, request.FILES, instance=product)
                     if form.is_valid():
                         form.save()
-                        messages.success(request, "Product updated successfully!")
+                        messages.success(request, _("Product updated successfully!"))
                     else:
                         print("Form errors:", form.errors)  # Debugging: Print errors
-                        messages.error(request, "Form is not valid. Please check the input fields.")
+                        messages.error(request, _("Form is not valid. Please check the input fields."))
 
                 elif action == "delete":
                     product = get_object_or_404(Product, id=request.POST.get("product_id"))
                     product.delete()
-                    messages.success(request, "Product deleted successfully!")
+                    messages.success(request, _("Product deleted successfully!"))
 
         except Exception as e:
             # Rollback any changes if something goes wrong
-            messages.error(request, f"An error occurred: {str(e)}")
+            messages.error(request, _(f"An error occurred: {str(e)}"))
 
         return redirect("product")
 
@@ -293,13 +275,13 @@ class BlogView(PermissionRequiredMixin, View):
 
         # Check permissions for create, update, and delete actions
         if action == "create" and not request.user.has_perm('core.can_create_blog'):
-            messages.error(request, "You do not have permission to create a blog.")
+            messages.error(request, _("You do not have permission to create a blog."))
             return redirect("blog")
         elif action == "update" and not request.user.has_perm('core.can_update_blog'):
-            messages.error(request, "You do not have permission to update a blog.")
+            messages.error(request, _("You do not have permission to update a blog."))
             return redirect("blog")
         elif action == "delete" and not request.user.has_perm('core.can_delete_blog'):
-            messages.error(request, "You do not have permission to delete a blog.")
+            messages.error(request, _("You do not have permission to delete a blog."))
             return redirect("blog")
 
         try:
@@ -308,10 +290,10 @@ class BlogView(PermissionRequiredMixin, View):
                     form = BlogForm(request.POST)
                     if form.is_valid():
                         form.save()
-                        messages.success(request, "Blog created successfully!")
+                        messages.success(request, _("Blog created successfully!"))
                     else:
                         print("Form errors:", form.errors)  # Debugging: Print errors
-                        messages.error(request, "Form is not valid. Please check the input fields.")
+                        messages.error(request, _("Form is not valid. Please check the input fields."))
 
                 elif action == "update":
                     blog = get_object_or_404(Blog, id=request.POST.get("blog_id"))
@@ -321,15 +303,15 @@ class BlogView(PermissionRequiredMixin, View):
                         messages.success(request, "Blog updated successfully!")
                     else:
                         print("Form errors:", form.errors)  # Debugging: Print errors
-                        messages.error(request, "Form is not valid. Please check the input fields.")
+                        messages.error(request, _("Form is not valid. Please check the input fields."))
 
                 elif action == "delete":
                     blog = get_object_or_404(Blog, id=request.POST.get("blog_id"))
                     blog.delete()
-                    messages.success(request, "Blog deleted successfully!")
+                    messages.success(request, _("Blog deleted successfully!"))
 
         except Exception as e:
             # Rollback any changes if something goes wrong
-            messages.error(request, f"An error occurred: {str(e)}")
+            messages.error(request, _(f"An error occurred: {str(e)}"))
 
         return redirect("blog")
