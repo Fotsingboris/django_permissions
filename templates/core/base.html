@@ -158,11 +158,12 @@
                         </a>
                     </li>
                     {% if user.is_superuser %}
+                   
                     <li class="nav-item">
-                        <a href="{% url 'user_management' %}" 
-                        class="nav-link {% if request.resolver_match.url_name == 'user_management' %}active{% endif %}" 
-                        {% if request.resolver_match.url_name == 'user_management' %}aria-current="page"{% endif %}>
-                            {% trans "Manage Users" %}
+                        <a href="{% url 'all_users' %}" 
+                        class="nav-link {% if request.resolver_match.url_name == 'all_users' %}active{% endif %}" 
+                        {% if request.resolver_match.url_name == 'all_users' %}aria-current="page"{% endif %}>
+                            {% trans "All Users" %}
                         </a>
                     </li>
                     {% endif %}

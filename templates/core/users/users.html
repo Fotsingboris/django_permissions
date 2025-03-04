@@ -1,0 +1,52 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+{% if user.is_superuser %}
+   
+        <a href="{% url 'user_management' %}" class="btn btn-primary">Manage Users</a>
+        <!-- Admin View -->
+        <h2 class="my-4">{% trans "All Users and Permissions" %}</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>{% trans "Username" %}</th>
+                    <th>{% trans "Email" %}</th>
+                    <th>{% trans "Permissions" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user, accessible_buttons in users_permissions %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% if accessible_buttons %}
+                                <div class="btn-group">
+                                    {% for button in accessible_buttons %}
+                                        <button type="button" class="btn btn-success">{{ button }}</button>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p>{% trans "No permissions assigned" %}</p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2 class="my-4">{% trans "Available Permissions" %}</h2>
+        <div class="row">
+            {% for label, codename in available_permissions %}
+                <div class="col-3">
+                    <button type="button" class="btn btn-outline-primary mt-2">
+                        {{ label }}
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% endif %}
+{% endblock  %}
