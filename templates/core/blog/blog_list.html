@@ -1,0 +1,143 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{% trans "Blogs" %}</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBlogModal">{% trans "Add Blog" %}</button>
+
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>{% trans "Title" %}</th>
+                <th>{% trans "Category" %}</th>
+                <th>{% trans "Created At" %}</th>
+                <th>{% trans "Actions" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for blog in blogs %}
+            <tr>
+                <td>{{ blog.title }}</td>
+                <td>{{ blog.category.name }}</td>
+                <td>{{ blog.created_at }}</td>
+                <td>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editBlogModal{{ blog.id }}">{% trans "Edit" %}</button>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteBlogModal{{ blog.id }}">{% trans "Delete" %}</button>
+                </td>
+            </tr>
+
+            <!-- Edit Blog Modal -->
+            <div class="modal fade" id="editBlogModal{{ blog.id }}" tabindex="-1" aria-labelledby="editBlogModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{% trans "Edit Blog" %}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form method="POST" action="{% url 'blog' %}">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                <input type="hidden" name="action" value="update">
+                                <input type="hidden" name="blog_id" value="{{ blog.id }}">
+
+                                <div class="mb-3">
+                                    <label class="form-label">{% trans "Title" %}</label>
+                                    <input type="text" name="title" class="form-control" value="{{ blog.title }}" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">{% trans "Category" %}</label>
+                                    <select name="category" class="form-select" required>
+                                        {% for category in categories %}
+                                            <option value="{{ category.id }}" {% if category.id == blog.category.id %}selected{% endif %}>
+                                                {{ category.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">{% trans "Content" %}</label>
+                                    <textarea name="content" class="form-control" required>{{ blog.content }}</textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">{% trans "Update Blog" %}</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Blog Modal -->
+            <div class="modal fade" id="deleteBlogModal{{ blog.id }}" tabindex="-1" aria-labelledby="deleteBlogModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{% trans "Delete Blog" %}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form method="POST" action="{% url 'blog' %}">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="blog_id" value="{{ blog.id }}">
+                                <p>{% trans "Are you sure you want to delete this blog?" %}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Cancel" %}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Add Blog Modal -->
+<div class="modal fade" id="addBlogModal" tabindex="-1" aria-labelledby="addBlogModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% trans "Add Blog" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{% url 'blog' %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="create">
+
+                    <div class="mb-3">
+                        <label class="form-label">{% trans "Title" %}</label>
+                        <input type="text" name="title" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{% trans "Category" %}</label>
+                        <select name="category" class="form-select" required>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{% trans "Content" %}</label>
+                        <textarea name="content" class="form-control" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">{% trans "Add Blog" %}</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

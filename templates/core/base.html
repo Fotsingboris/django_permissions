@@ -179,6 +179,14 @@
                             {% trans "Product" %}
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'blog' %}" 
+                        class="nav-link {% if request.resolver_match.url_name == 'blog' %}active{% endif %}" 
+                        {% if request.resolver_match.url_name == 'blog' %}aria-current="page"{% endif %}>
+                            {% trans "Blog" %}
+                        </a>
+                    </li>
                     {% if user.is_superuser %}
                    
                     <li class="nav-item">

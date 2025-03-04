@@ -236,3 +236,33 @@ class ProductView(PermissionRequiredMixin, View):
             messages.success(request, "Product deleted successfully!")
 
         return redirect("product")
+
+
+class BlogView(PermissionRequiredMixin, View):
+    permission_required = "app.can_view_blog"
+
+    def get(self, request):
+        blogs = Blog.objects.all()
+        categories = Category.objects.all()
+        form = BlogForm()
+        return render(request, "core/blog/blog_list.html", {"blogs": blogs, "form": form, "categories":categories})
+
+    def post(self, request):
+        action = request.POST.get("action")
+        if action == "create":
+            form = BlogForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Blog created successfully!")
+        elif action == "update":
+            blog = get_object_or_404(Blog, id=request.POST.get("blog_id"))
+            form = BlogForm(request.POST, instance=blog)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Blog updated successfully!")
+        elif action == "delete":
+            blog = get_object_or_404(Blog, id=request.POST.get("blog_id"))
+            blog.delete()
+            messages.success(request, "Blog deleted successfully!")
+
+        return redirect("blog")
