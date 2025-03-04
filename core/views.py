@@ -5,6 +5,7 @@ from .forms import UserPermissionForm
 from django.contrib.auth import  login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
+from django.contrib.auth import logout
 
 
 @login_required
@@ -41,10 +42,48 @@ def user_management(request):
 
     return render(request, 'core/user_management.html', {'form': form})
 
+
 @login_required
 def dashboard(request):
-    # You can add more context here if needed, such as stats or data from your models
-    return render(request, 'core/dashboard.html')
+    # Define all available permissions (as button labels and their corresponding codename)
+    available_permissions = [
+        ('Create Blog', 'can_create_blog'),
+        ('Update Blog', 'can_update_blog'),
+        ('View Blog', 'can_view_blog'),
+        ('Delete Blog', 'can_delete_blog'),
+        ('Create Product', 'can_create_product'),
+        ('Update Product', 'can_update_product'),
+        ('View Product', 'can_view_product'),
+        ('Delete Product', 'can_delete_product'),
+        ('Create Category', 'can_create_category'),
+        ('Update Category', 'can_update_category'),
+        ('View Category', 'can_view_category'),
+        ('Delete Category', 'can_delete_category')
+    ]
+
+    users_permissions = []
+
+    # Check if the logged-in user is an admin
+    if request.user.is_superuser:
+        # Admin can see all users
+        users = User.objects.all()
+    else:
+        # Regular users can only see their own permissions
+        users = [request.user]  # Only their own user
+
+    # For each user, check their permissions and create a list of accessible buttons
+    for user in users:
+        user_permissions = user.user_permissions.all().values_list('codename', flat=True)
+        accessible_buttons = []
+
+        # Check which buttons (permissions) the user has and add them to accessible_buttons
+        for permission_label, permission_codename in available_permissions:
+            if permission_codename in user_permissions:
+                accessible_buttons.append(permission_label)
+
+        users_permissions.append((user, accessible_buttons))  # Store user and accessible buttons
+
+    return render(request, 'core/dashboard.html', {'users_permissions': users_permissions, 'available_permissions': available_permissions})
 
 
 def login_view(request):
@@ -62,3 +101,11 @@ def login_view(request):
         form = AuthenticationForm()
     
     return render(request, 'core/login.html', {'form': form})
+
+
+@login_required
+def user_logout(request):
+    # Log the user out
+    logout(request)
+    # Redirect to the login page or home page after logout
+    return redirect('login')

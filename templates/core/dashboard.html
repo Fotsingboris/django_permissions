@@ -3,6 +3,58 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-    <h1>Welcome to the Admin Dashboard</h1>
-    <a href="{% url 'user_management' %}" class="btn btn-primary">Manage Users</a>
+    <h1>Welcome to the Dashboard</h1>
+
+    {% if user.is_superuser %}
+        <!-- Admin View -->
+        <h2 class="my-4">All Users and Permissions</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Permissions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user, accessible_buttons in users_permissions %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% if accessible_buttons %}
+                                <div class="btn-group">
+                                    {% for button in accessible_buttons %}
+                                        <button type="button" class="btn btn-success">{{ button }}</button>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p>No permissions assigned</p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2 class="my-4">Available Permissions</h2>
+        <div class="row">
+            {% for label, codename in available_permissions %}
+                <div class="col-3">
+                    <button type="button" class="btn btn-outline-primary mt-2">
+                        {{ label }}
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <!-- Regular User View -->
+        <h2 class="my-4">Your Permissions</h2>
+        <ul>
+            {% for permission in users_permissions.0.1 %}
+                <li>{{ permission }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}

@@ -7,6 +7,6 @@ urlpatterns = [
     path('user-management/', user_management, name='user_management'),
     path('dashboard/', dashboard, name='dashboard'),  # Create a simple dashboard view if needed
         path('login/', login_view, name='login'),  # URL for the login page
-        path('logout/', LogoutView.as_view(), name='logout'),
+        path('logout/', user_logout, name='logout'),
 
 ]
