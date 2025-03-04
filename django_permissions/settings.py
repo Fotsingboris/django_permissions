@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 from decouple import config
 from django.contrib.messages import constants as messages
+from django.utils.translation import gettext_lazy as _
 
 
 MESSAGE_TAGS = {
@@ -54,6 +55,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+        'django.middleware.locale.LocaleMiddleware',
+
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -119,13 +122,24 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = 'en'
 
-TIME_ZONE = "UTC"
+TIME_ZONE = 'UTC'
+
+LANGUAGES = [
+    ('en', _('English')),
+    ('fr', _('French')),
+]
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
+
+SITE_ID = 1
+
+LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale'),]
 
 
 # Static files (CSS, JavaScript, Images)

@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User, Permission
 from django.contrib.contenttypes.models import ContentType
 from core.models import Blog, Product, Category
+from django.utils.translation import gettext_lazy as _
 
 class UserPermissionForm(forms.ModelForm):
     password2 = forms.CharField(
@@ -38,7 +39,7 @@ class UserPermissionForm(forms.ModelForm):
         password2 = cleaned_data.get("password2")
 
         if password1 and password2 and password1 != password2:
-            self.add_error('password2', 'Passwords do not match.')
+            self.add_error('password2', _('Passwords do not match.'))
 
         # Ensure permissions field is a list
         permissions = cleaned_data.get('permissions')
