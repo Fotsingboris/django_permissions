@@ -5,7 +5,115 @@
 {% block content %}
 {% if user.is_superuser %}
    
-        <a href="{% url 'user_management' %}" class="btn btn-primary">Manage Users</a>
+        {% comment %} <a href="{% url 'user_management' %}" class="btn btn-primary">Manage Users</a> {% endcomment %}
+        <!-- Button to trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userManagementModal">
+            {% trans "Manage Users" %}
+        </button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="userManagementModal" tabindex="-1" aria-labelledby="userManagementModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="userManagementModalLabel">{% trans "User Management" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+            
+                    <div class="container">
+                        <h2 class="my-4">{% trans "Create New User and Assign Permissions" %}</h2>
+        
+                        <form method="POST" action="{% url "user_management" %}">
+                            {% csrf_token %}
+                            
+                            <!-- Display form errors -->
+                            {% if form.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{% trans "Error" %}:</strong> {% trans "Please correct the errors below." %}
+                                    {{ form.non_field_errors }}
+                                </div>
+                            {% endif %}
+        
+                            <!-- Username -->
+                            <div class="mb-3">
+                                <label for="{{ form.username.id_for_label }}" class="form-label">{% trans "Username" %}</label>
+                                {{ form.username }}
+                                {% if form.username.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.username.errors %}
+                                            <p>{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+        
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <label for="{{ form.email.id_for_label }}" class="form-label">{% trans "Email" %}</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.email.errors %}
+                                            <p>{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+        
+                            <!-- Password 1 -->
+                            <div class="mb-3">
+                                <label for="{{ form.password.id_for_label }}" class="form-label">{% trans "Password" %}</label>
+                                {{ form.password }}
+                                {% if form.password.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.password.errors %}
+                                            <p>{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+        
+                            <!-- Password 2 -->
+                            <div class="mb-3">
+                                <label for="{{ form.password2.id_for_label }}" class="form-label">{% trans "Confirm Password" %}</label>
+                                {{ form.password2 }}
+                                {% if form.password2.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.password2.errors %}
+                                            <p>{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+        
+                        
+                            <!-- Permissions (Group them in 4 per row) -->
+                            <div class="mb-3">
+                                <label class="form-label">{% trans "Permissions" %}</label>
+                                <div class="row">
+                                    {% for permission in form.permissions %}
+                                        <div class="col-3 form-check">
+                                            <input type="checkbox" name="permissions" value="{{ permission.data.value }}" class="form-check-input" id="{{ permission.id_for_label }}" {% if permission.data.selected %}checked{% endif %}>
+                                            <label class="form-check-label" for="{{ permission.id_for_label }}">
+                                                {{ permission.choice_label }}
+                                            </label>
+                                        </div>
+                                        {% if forloop.counter|divisibleby:4 %}
+                                            </div><div class="row">
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+        
+                            <button type="submit" class="btn btn-success">{% trans "Create User" %}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+  
         <!-- Admin View -->
         <h2 class="my-4">{% trans "All Users and Permissions" %}</h2>
         <table class="table table-bordered">

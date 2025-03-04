@@ -40,7 +40,7 @@ def user_management(request):
     else:
         form = UserPermissionForm()
 
-    return render(request, 'core/user_management.html', {'form': form})
+    return redirect('all_users')
 
 
 @login_required
@@ -153,9 +153,11 @@ def all_users(request):
 
         users_permissions.append((user, accessible_buttons))  # Store user and accessible buttons
     
+        form = UserPermissionForm()
     
     context = {
         'users_permissions': users_permissions, 
-        'available_permissions': available_permissions
+        'available_permissions': available_permissions,
+        'form':form
     }
     return render(request, templates, context)

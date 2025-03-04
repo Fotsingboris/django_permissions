@@ -8,7 +8,6 @@
 
     {% if user.is_superuser %}
    
-        <a href="{% url 'user_management' %}" class="btn btn-primary">Manage Users</a>
         <!-- Admin View -->
         <h2 class="my-4">{% trans "All Users and Permissions" %}</h2>
         <table class="table table-bordered">
