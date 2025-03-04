@@ -53,6 +53,29 @@
                         <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
                     </li>
                     {% endif %}
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {% get_current_language as current_language %}
+                            {% if current_language == 'en' %}
+                                🇬🇧 {% trans "English" %}
+                            {% elif current_language == 'fr' %}
+                                🇫🇷 {% trans "French" %}
+                            {% else %}
+                                🌍 {% trans "Language" %}
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="languageDropdown">
+                            <li>
+                                <form action="{% url 'set_language' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.path }}">
+                                    <button type="submit" name="language" value="en" class="dropdown-item">🇬🇧 {% trans "English" %}</button>
+                                    <button type="submit" name="language" value="fr" class="dropdown-item">🇫🇷 {% trans "Français" %}</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
