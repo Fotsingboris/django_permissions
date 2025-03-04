@@ -5,11 +5,11 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center">
         <h2>{% trans "Blogs" %}</h2>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBlogModal">{% trans "Add Blog" %}</button>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addBlogModal">{% trans "Add Blog" %}</button>
     </div>
     
 
-    <table class="table mt-3">
+    <table class="table mt-3 table-bordered">
         <thead>
             <tr>
                 <th>{% trans "Title" %}</th>
@@ -25,8 +25,8 @@
                 <td>{{ blog.category.name }}</td>
                 <td>{{ blog.created_at }}</td>
                 <td>
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editBlogModal{{ blog.id }}">{% trans "Edit" %}</button>
-                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteBlogModal{{ blog.id }}">{% trans "Delete" %}</button>
+                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editBlogModal{{ blog.id }}">{% trans "Edit" %}</button>
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteBlogModal{{ blog.id }}">{% trans "Delete" %}</button>
                 </td>
             </tr>
 
@@ -66,8 +66,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-success">{% trans "Update Blog" %}</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                                <button type="submit btn-sm" class="btn btn-success">{% trans "Update Blog" %}</button>
+                                <button type="button btn-sm" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
                             </div>
                         </form>
                     </div>
@@ -90,8 +90,8 @@
                                 <p>{% trans "Are you sure you want to delete this blog?" %}</p>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Cancel" %}</button>
+                                <button type="submit btn-sm" class="btn btn-danger">{% trans "Delete" %}</button>
+                                <button type="button btn-sm" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Cancel" %}</button>
                             </div>
                         </form>
                     </div>
@@ -135,8 +135,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">{% trans "Add Blog" %}</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                    <button type="submit" class="btn btn-success btn-sm">{% trans "Add Blog" %}</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">{% trans "Close" %}</button>
                 </div>
             </form>
         </div>

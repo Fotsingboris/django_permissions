@@ -11,7 +11,7 @@
         <!-- Button to trigger modal -->
         <div class="d-flex justify-content-between align-items-center my-4">
             <h2>{% trans "All Users and Permissions" %}</h2>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userManagementModal">
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#userManagementModal">
                 {% trans "Add Users" %}
             </button>
         </div>
@@ -112,7 +112,7 @@
                                 </div>
                             </div>
         
-                            <button type="submit" class="btn btn-success">{% trans "Create User" %}</button>
+                            <button type="submit" class="btn btn-sm btn-success">{% trans "Create User" %}</button>
                         </form>
                     </div>
                 </div>
@@ -138,7 +138,7 @@
                             {% if accessible_buttons %}
                                 <div class="btn-group">
                                     {% for button in accessible_buttons %}
-                                        <button type="button" class="btn btn-success">{{ button }}</button>
+                                        <button type="button" class="btn btn-sm btn-success">{{ button }}</button>
                                     {% endfor %}
                                 </div>
                             {% else %}
@@ -154,7 +154,7 @@
         <div class="row">
             {% for label, codename in available_permissions %}
                 <div class="col-3">
-                    <button type="button" class="btn btn-outline-primary mt-2">
+                    <button type="button" class="btn btn-sm btn-outline-primary mt-2">
                         {{ label }}
                     </button>
                 </div>

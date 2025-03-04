@@ -4,11 +4,11 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center">
         <h2>{% trans "Categories" %}</h2>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">{% trans "Add Category" %}</button>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCategoryModal">{% trans "Add Category" %}</button>
     </div>
     
     <!-- Categories List -->
-    <table class="table mt-3">
+    <table class="table mt-3 table-bordered">
         <thead>
             <tr>
                 <th>{% trans "Name" %}</th>
@@ -20,8 +20,8 @@
             <tr>
                 <td>{{ category.name }}</td>
                 <td>
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ category.id }}">{% trans "Edit" %}</button>
-                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal{{ category.id }}">{% trans "Delete" %}</button>
+                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ category.id }}">{% trans "Edit" %}</button>
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal{{ category.id }}">{% trans "Delete" %}</button>
                 </td>
             </tr>
 
@@ -40,7 +40,7 @@
                                 <input type="hidden" name="action" value="update">
                                 <label>{% trans "Name" %}:</label>
                                 <input type="text" name="name" class="form-control" value="{{ category.name }}">
-                                <button type="submit" class="btn btn-success mt-2">{% trans "Save Changes" %}</button>
+                                <button type="submit" class="btn btn-success btn-sm mt-2">{% trans "Save Changes" %}</button>
                             </form>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="category_id" value="{{ category.id }}">
                                 <input type="hidden" name="action" value="delete">
-                                <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+                                <button type="submit" class="btn btn-danger btn-sm">{% trans "Delete" %}</button>
                             </form>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                     <input type="hidden" name="action" value="create">
                     <label>{% trans "Name" %}:</label>
                     <input type="text" name="name" class="form-control">
-                    <button type="submit" class="btn btn-success mt-2">{% trans "Add" %}</button>
+                    <button type="submit" class="btn btn-success btn-sm mt-2">{% trans "Add" %}</button>
                 </form>
             </div>
         </div>

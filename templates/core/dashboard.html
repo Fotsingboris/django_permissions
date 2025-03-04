@@ -4,6 +4,8 @@
 {% block title %}{% trans "Dashboard" %}{% endblock %}
 
 {% block content %}
+<div class="container mt-4">
+
     <h1>{% trans "Welcome to the Dashboard" %}</h1>
 
     {% if user.is_superuser %}
@@ -59,4 +61,6 @@
             {% endfor %}
         </ul>
     {% endif %}
+</div>
+
 {% endblock %}
