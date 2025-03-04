@@ -163,6 +163,14 @@
                             {% trans "Overview" %}
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'category' %}" 
+                        class="nav-link {% if request.resolver_match.url_name == 'category' %}active{% endif %}" 
+                        {% if request.resolver_match.url_name == 'category' %}aria-current="page"{% endif %}>
+                            {% trans "Category" %}
+                        </a>
+                    </li>
                     {% if user.is_superuser %}
                    
                     <li class="nav-item">

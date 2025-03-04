@@ -1,11 +1,15 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .forms import UserPermissionForm
+
+from core.models import *
+from .forms import *
 from django.contrib.auth import  login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth import logout
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.views import View
 
 
 @login_required
@@ -161,3 +165,34 @@ def all_users(request):
         'form':form
     }
     return render(request, templates, context)
+
+
+class CategoryView(PermissionRequiredMixin, View):
+    permission_required = "app.can_view_category"
+
+    def get(self, request):
+        categories = Category.objects.all()
+        form = CategoryForm()
+        return render(request, "core/category/category_list.html", {"categories": categories, "form": form})
+
+    def post(self, request):
+        action = request.POST.get("action")
+        if action == "create":
+            form = CategoryForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Category created successfully!")
+            else:
+                messages.error(request, "Error creating category.")
+        elif action == "update":
+            category = get_object_or_404(Category, id=request.POST.get("category_id"))
+            form = CategoryForm(request.POST, instance=category)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Category updated successfully!")
+        elif action == "delete":
+            category = get_object_or_404(Category, id=request.POST.get("category_id"))
+            category.delete()
+            messages.success(request, "Category deleted successfully!")
+
+        return redirect("category")

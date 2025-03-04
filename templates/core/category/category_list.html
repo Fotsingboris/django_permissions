@@ -1,0 +1,93 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{% trans "Categories" %}</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">{% trans "Add Category" %}</button>
+
+    <!-- Categories List -->
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>{% trans "Name" %}</th>
+                <th>{% trans "Actions" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            <tr>
+                <td>{{ category.name }}</td>
+                <td>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ category.id }}">{% trans "Edit" %}</button>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal{{ category.id }}">{% trans "Delete" %}</button>
+                </td>
+            </tr>
+
+            <!-- Edit Modal -->
+            <div class="modal fade" id="editCategoryModal{{ category.id }}" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{% trans "Edit Category" %}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="category_id" value="{{ category.id }}">
+                                <input type="hidden" name="action" value="update">
+                                <label>{% trans "Name" %}:</label>
+                                <input type="text" name="name" class="form-control" value="{{ category.name }}">
+                                <button type="submit" class="btn btn-success mt-2">{% trans "Save Changes" %}</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deleteCategoryModal{{ category.id }}" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{% trans "Delete Category" %}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>{% trans "Are you sure you want to delete" %} {{ category.name }}?</p>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="category_id" value="{{ category.id }}">
+                                <input type="hidden" name="action" value="delete">
+                                <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% trans "Add Category" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="create">
+                    <label>{% trans "Name" %}:</label>
+                    <input type="text" name="name" class="form-control">
+                    <button type="submit" class="btn btn-success mt-2">{% trans "Add" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

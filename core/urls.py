@@ -9,5 +9,8 @@ urlpatterns = [
     path('users/', all_users, name='all_users'),  # Create a simple dashboard view if needed
         path('', login_view, name='login'),  # URL for the login page
         path('logout/', user_logout, name='logout'),
+        
+            path("category/", CategoryView.as_view(), name="category"),
+
 
 ]

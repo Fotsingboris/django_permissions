@@ -47,3 +47,50 @@ class UserPermissionForm(forms.ModelForm):
             cleaned_data['permissions'] = []  # Default to empty list if no permissions are selected
 
         return cleaned_data
+    
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ["name"]
+        labels = {
+            "name": _("Name"),
+        }
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": _("Enter category name")}),
+        }
+
+
+class BlogForm(forms.ModelForm):
+    class Meta:
+        model = Blog
+        fields = ["title", "content", "category"]
+        labels = {
+            "title": _("Title"),
+            "content": _("Content"),
+            "category": _("Category"),
+        }
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-control", "placeholder": _("Enter blog title")}),
+            "content": forms.Textarea(attrs={"class": "form-control", "rows": 5, "placeholder": _("Enter blog content")}),
+            "category": forms.Select(attrs={"class": "form-control"}),
+        }
+
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ["name", "description", "category", "price"]
+        labels = {
+            "name": _("Name"),
+            "description": _("Description"),
+            "category": _("Category"),
+            "price": _("Price"),
+        }
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": _("Enter product name")}),
+            "description": forms.Textarea(attrs={"class": "form-control", "rows": 3, "placeholder": _("Enter product description")}),
+            "category": forms.Select(attrs={"class": "form-control"}),
+            "price": forms.NumberInput(attrs={"class": "form-control", "step": "0.01"}),
+        }
