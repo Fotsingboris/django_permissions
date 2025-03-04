@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 
 from core.models import *
 from .forms import *
@@ -177,25 +178,50 @@ class CategoryView(PermissionRequiredMixin, View):
 
     def post(self, request):
         action = request.POST.get("action")
-        if action == "create":
-            form = CategoryForm(request.POST)
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Category created successfully!")
-            else:
-                messages.error(request, "Error creating category.")
-        elif action == "update":
-            category = get_object_or_404(Category, id=request.POST.get("category_id"))
-            form = CategoryForm(request.POST, instance=category)
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Category updated successfully!")
-        elif action == "delete":
-            category = get_object_or_404(Category, id=request.POST.get("category_id"))
-            category.delete()
-            messages.success(request, "Category deleted successfully!")
+
+        # Permission checks for the actions
+        if action == "create" and not request.user.has_perm('core.can_create_category'):
+            messages.error(request, "You do not have permission to create a category.")
+            return redirect("category")
+
+        elif action == "update" and not request.user.has_perm('core.can_update_category'):
+            messages.error(request, "You do not have permission to update a category.")
+            return redirect("category")
+
+        elif action == "delete" and not request.user.has_perm('core.can_delete_category'):
+            messages.error(request, "You do not have permission to delete a category.")
+            return redirect("category")
+
+        try:
+            with transaction.atomic():  # Begin transaction
+                if action == "create":
+                    form = CategoryForm(request.POST)
+                    if form.is_valid():
+                        form.save()
+                        messages.success(request, "Category created successfully!")
+                    else:
+                        messages.error(request, "Error creating category.")
+
+                elif action == "update":
+                    category = get_object_or_404(Category, id=request.POST.get("category_id"))
+                    form = CategoryForm(request.POST, instance=category)
+                    if form.is_valid():
+                        form.save()
+                        messages.success(request, "Category updated successfully!")
+                    else:
+                        messages.error(request, "Error updating category.")
+
+                elif action == "delete":
+                    category = get_object_or_404(Category, id=request.POST.get("category_id"))
+                    category.delete()
+                    messages.success(request, "Category deleted successfully!")
+
+        except Exception as e:
+            # Rollback any changes if something goes wrong
+            messages.error(request, f"An error occurred: {str(e)}")
 
         return redirect("category")
+
     
     
     
