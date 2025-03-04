@@ -41,13 +41,15 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
+                  
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a>
                     </li>
-                    {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">{% trans "Logout" %}</a>
                     </li>
+
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>

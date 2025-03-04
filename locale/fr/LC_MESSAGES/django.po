@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-04 01:08+0000\n"
+"POT-Creation-Date: 2025-03-04 01:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
 #: core/forms.py:42
 msgid "Passwords do not match."
 msgstr "Les mots de passe ne correspondent pas."
@@ -116,12 +117,12 @@ msgstr "Produit"
 msgid "Products"
 msgstr "Produits"
 
-#: django_permissions/settings.py:130 templates/core/base.html:61
-#: templates/core/base.html:73
+#: django_permissions/settings.py:130 templates/core/base.html:63
+#: templates/core/base.html:75
 msgid "English"
 msgstr "Anglais"
 
-#: django_permissions/settings.py:131 templates/core/base.html:63
+#: django_permissions/settings.py:131 templates/core/base.html:65
 msgid "French"
 msgstr "Français"
 
@@ -129,28 +130,28 @@ msgstr "Français"
 msgid "Manage Permissions"
 msgstr "Gérer les permissions"
 
-#: templates/core/base.html:45 templates/core/dashboard.html:4
+#: templates/core/base.html:47 templates/core/dashboard.html:4
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
-#: templates/core/base.html:49
+#: templates/core/base.html:50
 msgid "Logout"
 msgstr "Se déconnecter"
 
-#: templates/core/base.html:53 templates/core/login.html:3
+#: templates/core/base.html:55 templates/core/login.html:3
 #: templates/core/login.html:9
 msgid "Login"
 msgstr "Connexion"
 
-#: templates/core/base.html:65
+#: templates/core/base.html:67
 msgid "Language"
 msgstr "Langue"
 
-#: templates/core/base.html:74
+#: templates/core/base.html:76
 msgid "Français"
 msgstr "Français"
 
-#: templates/core/base.html:92
+#: templates/core/base.html:94
 msgid "2025 My Project"
 msgstr "2025 Mon Projet"
 
@@ -218,7 +219,6 @@ msgstr "Confirmer le mot de passe"
 #: templates/core/user_management.html:90
 msgid "Create User"
 msgstr "Créer un utilisateur"
-
 
 #: venv/lib/python3.11/site-packages/django/contrib/messages/apps.py:16
 msgid "Messages"
