@@ -4,8 +4,10 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center">
         <h2>{% trans "Categories" %}</h2>
-        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCategoryModal">{% trans "Add Category" %}</button>
-    </div>
+        {% if perms.core.can_create_category %}
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCategoryModal">{% trans "Add Category" %}</button>
+        {% endif %}   
+     </div>
     
     <!-- Categories List -->
     <table class="table mt-3 table-bordered">
@@ -20,8 +22,13 @@
             <tr>
                 <td>{{ category.name }}</td>
                 <td>
+                    {% if perms.core.can_update_category %}
                     <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ category.id }}">{% trans "Edit" %}</button>
+                    {% endif %}
+                
+                    {% if perms.core.can_delete_category %}
                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal{{ category.id }}">{% trans "Delete" %}</button>
+                    {% endif %}
                 </td>
             </tr>
 

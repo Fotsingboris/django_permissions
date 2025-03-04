@@ -5,7 +5,10 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center">
         <h2>{% trans "Products" %}</h2>
+
+        {% if perms.core.can_create_product %}
         <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addProductModal">{% trans "Add Product" %}</button>
+        {% endif %}
     </div>
     
     <table class="table mt-3 table-bordered">
@@ -24,8 +27,13 @@
                 <td>{{ product.category.name }}</td>
                 <td>${{ product.price }}</td>
                 <td>
+                    {% if perms.core.can_update_product %}
                     <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editProductModal{{ product.id }}">{% trans "Edit" %}</button>
+                    {% endif %}
+
+                    {% if perms.core.can_delete_product %}
                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProductModal{{ product.id }}">{% trans "Delete" %}</button>
+                    {% endif %}
                 </td>
             </tr>
 
@@ -63,7 +71,6 @@
                                     <label class="form-label">{% trans "Price" %}</label>
                                     <input type="number" name="price" class="form-control" step="0.01" value="{{ product.price|stringformat:'0.2f' }}" required>
                                 </div>
-                                
 
                                 <div class="mb-3">
                                     <label class="form-label">{% trans "Description" %}</label>

@@ -168,7 +168,7 @@ def all_users(request):
 
 
 class CategoryView(PermissionRequiredMixin, View):
-    permission_required = "app.can_view_category"
+    permission_required = "core.can_view_category"
 
     def get(self, request):
         categories = Category.objects.all()
@@ -200,7 +200,7 @@ class CategoryView(PermissionRequiredMixin, View):
     
     
 class ProductView(PermissionRequiredMixin, View):
-    permission_required = "app.can_view_product"
+    permission_required = "core.can_view_product"
 
     def get(self, request):
         products = Product.objects.all()
@@ -239,9 +239,10 @@ class ProductView(PermissionRequiredMixin, View):
 
 
 class BlogView(PermissionRequiredMixin, View):
-    permission_required = "app.can_view_blog"
+    permission_required = "core.can_view_blog"
 
     def get(self, request):
+        
         blogs = Blog.objects.all()
         categories = Category.objects.all()
         form = BlogForm()
