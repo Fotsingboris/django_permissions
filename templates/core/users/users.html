@@ -3,13 +3,19 @@
 {% load i18n %}
 
 {% block content %}
+<div class="container mt-4">
+
 {% if user.is_superuser %}
    
         {% comment %} <a href="{% url 'user_management' %}" class="btn btn-primary">Manage Users</a> {% endcomment %}
         <!-- Button to trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userManagementModal">
-            {% trans "Manage Users" %}
-        </button>
+        <div class="d-flex justify-content-between align-items-center my-4">
+            <h2>{% trans "All Users and Permissions" %}</h2>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userManagementModal">
+                {% trans "Add Users" %}
+            </button>
+        </div>
+        
         
         <!-- Modal -->
         <div class="modal fade" id="userManagementModal" tabindex="-1" aria-labelledby="userManagementModalLabel" aria-hidden="true">
@@ -115,7 +121,6 @@
         </div>
   
         <!-- Admin View -->
-        <h2 class="my-4">{% trans "All Users and Permissions" %}</h2>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -157,4 +162,6 @@
         </div>
 
     {% endif %}
+</div>
+
 {% endblock  %}
