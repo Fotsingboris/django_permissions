@@ -106,10 +106,13 @@
             <div class="collapse navbar-collapse ms-auto" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/dashboard/' %}active{% endif %}" 
-                           href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a>
-                    </li>
+                        {% if user.is_superuser %}
+
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.path == '/dashboard/' %}active{% endif %}" 
+                                href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a>
+                            </li>
+                        {% endif %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == '/logout/' %}active{% endif %}" 
                            href="{% url 'logout' %}">{% trans "Logout" %}</a>
@@ -156,6 +159,10 @@
             <div class="sidebar-menu bg-light p-3 border-end">
                 <h4 class="mb-4">{% trans "Dashboard" %}</h4>
                 <ul class="nav flex-column">
+                    
+
+                    {% if user.is_superuser %}
+
                     <li class="nav-item">
                         <a href="{% url 'dashboard' %}" 
                         class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" 
@@ -163,6 +170,15 @@
                             {% trans "Overview" %}
                         </a>
                     </li>
+                   
+                    <li class="nav-item">
+                        <a href="{% url 'all_users' %}" 
+                        class="nav-link {% if request.resolver_match.url_name == 'all_users' %}active{% endif %}" 
+                        {% if request.resolver_match.url_name == 'all_users' %}aria-current="page"{% endif %}>
+                            {% trans "All Users" %}
+                        </a>
+                    </li>
+                    {% endif %}
 
                     <li class="nav-item">
                         <a href="{% url 'category' %}" 
@@ -187,16 +203,7 @@
                             {% trans "Blog" %}
                         </a>
                     </li>
-                    {% if user.is_superuser %}
                    
-                    <li class="nav-item">
-                        <a href="{% url 'all_users' %}" 
-                        class="nav-link {% if request.resolver_match.url_name == 'all_users' %}active{% endif %}" 
-                        {% if request.resolver_match.url_name == 'all_users' %}aria-current="page"{% endif %}>
-                            {% trans "All Users" %}
-                        </a>
-                    </li>
-                    {% endif %}
                 </ul>
             </div>
         {% endif %}

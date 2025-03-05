@@ -53,7 +53,8 @@ def user_management(request):
 def dashboard(request):
     # Assuming the user is an admin or staff member
     if not request.user.is_staff:
-        return redirect('home')  # Redirect to home page if not an admin
+        return redirect('category')  # Redirect to home page if not an admin
+    
     
     # Get the count of each model
     blog_count = Blog.objects.count()
