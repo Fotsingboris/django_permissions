@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.i18n import i18n_patterns, set_language
+from django.views import defaults as default_views
+from django.conf import settings
 
 
 urlpatterns = i18n_patterns(
@@ -25,3 +27,30 @@ urlpatterns = i18n_patterns(
     path('i18n/setlang/', set_language, name='set_language'),
     
 )
+
+if not settings.DEBUG:
+    handler404 = 'core.error_view.handler404'
+    handler500 = 'core.error_view.handler500'
+    handler403 = 'core.error_view.handler403'
+
+# Error views for debugging in development
+if settings.DEBUG:
+    urlpatterns += [
+        path(
+            "400/",
+            default_views.bad_request,
+            kwargs={"exception": Exception("Bad Request!")},
+        ),
+        path(
+            "403/",
+            default_views.permission_denied,
+            kwargs={"exception": Exception("Permission Denied")},
+        ),
+        path(
+            "404/",
+            default_views.page_not_found,
+            kwargs={"exception": Exception("Page not Found")},
+        ),
+        path("500/", default_views.server_error),
+    ]
+    

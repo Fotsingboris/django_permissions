@@ -1,0 +1,78 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+{% load i18n %}
+{% block title %}404 - Page Not Found{% endblock %}
+
+{% block css %}
+<style>
+   
+
+    /* 403 Styling */
+    .error-container {
+        max-width: 800px;
+        margin: auto;
+        display: flex;
+        align-items: center; /* Center align items vertically */
+        justify-content: center;
+        padding: 40px 20px;
+        text-align: left; /* Align text to the left */
+    }
+
+    .error-container img {
+        width: 50%;
+        max-width: 300px;
+        margin-right: 30px; /* Space between the image and text */
+    }
+
+    .error-container .text-container {
+        max-width: 400px;
+    }
+
+    .error-container h1 {
+        font-size: 6rem;
+        font-weight: bold;
+        color: blue;
+        margin-bottom: 20px;
+    }
+
+    .error-container p {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .btn-home {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 1rem;
+        font-weight: bold;
+        color: white;
+        background-color: blue;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: 0.3s ease;
+    }
+
+    .btn-home:hover {
+        background-color: rgba(255, 100, 100, 1);
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container error-container">
+    <!-- 404 Image -->
+    <img src="{% static 'images/404.svg' %}" alt="404 Not Found">
+
+    <!-- 404 Text Container -->
+    <div class="text-container">
+        <h1>404</h1>
+        <p>Oops! The page you are looking for doesn’t exist.</p>
+
+        <!-- Home Button -->
+        <a href="{% url 'dashboard' %}" class="btn-home">Go Home</a>
+    </div>
+</div>
+{% endblock %}
