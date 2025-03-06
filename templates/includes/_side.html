@@ -1,0 +1,53 @@
+{% load static %}
+{% load i18n %}
+
+<div class="sidebar-menu bg-light p-3 border-end">
+    <h4 class="mb-4">{% trans "Dashboard" %}</h4>
+    <ul class="nav flex-column">
+        
+
+        {% if user.is_superuser %}
+
+        <li class="nav-item">
+            <a href="{% url 'dashboard' %}" 
+            class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" 
+            {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}>
+                {% trans "Overview" %}
+            </a>
+        </li>
+       
+        <li class="nav-item">
+            <a href="{% url 'all_users' %}" 
+            class="nav-link {% if request.resolver_match.url_name == 'all_users' %}active{% endif %}" 
+            {% if request.resolver_match.url_name == 'all_users' %}aria-current="page"{% endif %}>
+                {% trans "All Users" %}
+            </a>
+        </li>
+        {% endif %}
+
+        <li class="nav-item">
+            <a href="{% url 'category' %}" 
+            class="nav-link {% if request.resolver_match.url_name == 'category' %}active{% endif %}" 
+            {% if request.resolver_match.url_name == 'category' %}aria-current="page"{% endif %}>
+                {% trans "Category" %}
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{% url 'product' %}" 
+            class="nav-link {% if request.resolver_match.url_name == 'product' %}active{% endif %}" 
+            {% if request.resolver_match.url_name == 'product' %}aria-current="page"{% endif %}>
+                {% trans "Product" %}
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{% url 'blog' %}" 
+            class="nav-link {% if request.resolver_match.url_name == 'blog' %}active{% endif %}" 
+            {% if request.resolver_match.url_name == 'blog' %}aria-current="page"{% endif %}>
+                {% trans "Blog" %}
+            </a>
+        </li>
+       
+    </ul>
+</div>

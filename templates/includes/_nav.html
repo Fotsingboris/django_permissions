@@ -1,0 +1,57 @@
+{% load static %}
+{% load i18n %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand text-white float-start" href="#">{% trans "Manage Permissions" %}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse ms-auto" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/dashboard/' %}active{% endif %}" 
+                            href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a>
+                        </li>
+                    {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/logout/' %}active{% endif %}" 
+                       href="{% url 'logout' %}">{% trans "Logout" %}</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/login/' %}active{% endif %}" 
+                       href="{% url 'login' %}">{% trans "Login" %}</a>
+                </li>
+                {% endif %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="languageDropdown" role="button" 
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        {% get_current_language as current_language %}
+                        {% if current_language == 'en' %}
+                            🇬🇧 {% trans "English" %}
+                        {% elif current_language == 'fr' %}
+                            🇫🇷 {% trans "French" %}
+                        {% else %}
+                            🌍 {% trans "Language" %}
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="languageDropdown">
+                        <li>
+                            <form action="{% url 'set_language' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.path }}">
+                                <button type="submit" name="language" value="en" class="dropdown-item">🇬🇧 {% trans "English" %}</button>
+                                <button type="submit" name="language" value="fr" class="dropdown-item">🇫🇷 {% trans "Français" %}</button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
